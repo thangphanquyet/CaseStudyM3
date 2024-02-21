@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AddressServ {
+public class AddressServiet {
     public static Connection connection = ConnectionDB.getConnection();
     public Address getAddressByID(int id){
         PreparedStatement statement1 = null;

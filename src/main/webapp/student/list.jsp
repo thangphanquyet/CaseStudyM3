@@ -7,14 +7,16 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>quản lý sinh viên</title>
+    <link href="resources/bootstrap/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <a href="student?action=create">Thêm mới sinh viên</a>
 <div align="center">
-    <table border="1" cellpadding="4">
+    <table border="1" cellpadding="4" class="table">
         <tr>
             <th>id</th>
             <th>name</th>
@@ -31,6 +33,8 @@
         </c:forEach>
         </tr>
     </table>
+    <button type="button" class="btn btn-primary">Primary Button</button>
 </div>
+<script src="resources/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>

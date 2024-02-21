@@ -4,9 +4,22 @@ public class Student {
 private int id;
 private String name;
 private int age;
+private int addressId;
 private String address;
 
     public Student() {
+    }
+
+    public Student(String name, int age, String address) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
+
+    public Student(String name, int age, int addressId) {
+        this.name = name;
+        this.age = age;
+        this.addressId = addressId;
     }
 
     public Student(int id, String name, int age, String address) {
@@ -14,6 +27,14 @@ private String address;
         this.name = name;
         this.age = age;
         this.address = address;
+    }
+
+    public int getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 
     public int getId() {

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Address;
 import model.Student;
 import serviet.StudentServiet;
 
@@ -24,7 +25,11 @@ public class StudentController extends HttpServlet {
         }
         switch (action) {
             case "create":
-                showCreateForm(req, resp);
+                try {
+                    showCreateForm(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             default:
                 try {
@@ -38,17 +43,23 @@ public class StudentController extends HttpServlet {
     }
 
     // lay du lieu tu create.jsp
-    private void insertStudent(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        int id = Integer.parseInt(req.getParameter("id"));
+    private void insertStudent(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+
         String name = req.getParameter("name");
         int age = Integer.parseInt(req.getParameter("age"));
-        String address = req.getParameter("address");
-        Student student = new Student(id, name, age, address);
+        int addressId = Integer.parseInt(req.getParameter("address"));
+        Student student = new Student( name, age, addressId);
         StudentServiet.insertStudentToDataBase(student);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("student/list.jsp");
+        List<Student> studentList = studentServiet.showList();
+        req.setAttribute("list", studentList);
+        dispatcher.forward(req, resp);
     }
 
-    private void showCreateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showCreateForm(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher("student/create.jsp");
+        List<Address> addressList = studentServiet.showAddressList();
+        req.setAttribute("addressList", addressList);
         dispatcher.forward(req, resp);
     }
 

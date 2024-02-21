@@ -7,10 +7,11 @@ import model.Student;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StudentServiet {
     public static Connection connection = ConnectionDB.getConnection();
-    public AddressServ addressServ = new AddressServ();
+    public AddressServiet addressServ = new AddressServiet();
 
 
     public List<Student> showList() throws SQLException {
@@ -35,14 +36,36 @@ public class StudentServiet {
     public static void insertStudentToDataBase(Student student) {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("insert into hanghoa1 (id, name, age, address) values (?,?,?,?);");
-            statement.setInt(1,student.getId());
+            statement = connection.prepareStatement("insert into student (id, name, age, addressid) values (?,?,?,?);");
+            statement.setInt(1, StudentServiet.generateRandomInt());
             statement.setString(2,student.getName());
             statement.setInt(3,student.getAge());
-            statement.setString(4,student.getAddress());
+            statement.setInt(4,student.getAddressId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public List<Address> showAddressList() throws SQLException{
+        List<Address> studentList = new ArrayList<>();
+        PreparedStatement statement = connection.prepareStatement("select * from address;");
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+
+            //lay thong tin o bang address
+            int id = rs.getInt("id");
+            String name = rs.getString("address");
+
+            Address address = new Address(id, name);
+            studentList.add(address);
+        }
+        return studentList;
+    }
+
+    public static int generateRandomInt() {
+        Random random = new Random();
+        return random.nextInt(); // Trả về một số nguyên ngẫu nhiên
+    }
+
 }
