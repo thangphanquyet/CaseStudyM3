@@ -23,23 +23,28 @@ public class StudentController extends HttpServlet {
         if (action == null) {
             action = "";
         }
-        switch (action) {
-            case "create":
-                try {
+        try {
+            switch (action) {
+                case "create":
                     showCreateForm(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            default:
-                try {
+                    break;
+                case "delete":
+                    deleteStudent(req,resp);
                     findAllCustomer(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+                    break;
+                default:
+                    findAllCustomer(req, resp);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+    }
 
-
+    private void deleteStudent(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        StudentServiet.delete(id);
+        String searchQuery = req.getParameter("searchQuery") == null ? "" : req.getParameter("searchQuery");
+        List<Student> studentList = studentServiet.showList(searchQuery);
     }
 
     // lay du lieu tu create.jsp
@@ -51,7 +56,7 @@ public class StudentController extends HttpServlet {
         Student student = new Student( name, age, addressId);
         StudentServiet.insertStudentToDataBase(student);
         RequestDispatcher dispatcher = req.getRequestDispatcher("student/list.jsp");
-        List<Student> studentList = studentServiet.showList();
+        List<Student> studentList = studentServiet.showList("");
         req.setAttribute("list", studentList);
         dispatcher.forward(req, resp);
     }
@@ -65,7 +70,8 @@ public class StudentController extends HttpServlet {
 
     public void findAllCustomer(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher("student/list.jsp");
-        List<Student> studentList = studentServiet.showList();
+        String searchQuery = req.getParameter("searchQuery") == null ? "" : req.getParameter("searchQuery");
+        List<Student> studentList = studentServiet.showList(searchQuery);
         req.setAttribute("list", studentList);
         dispatcher.forward(req, resp);
     }

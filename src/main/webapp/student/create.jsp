@@ -12,16 +12,16 @@
     <title>Title</title>
 </head>
 <body>
-<form method="post">
-    <input type="text" name="name" placeholder="name">
-    <input type="text" name="age" placeholder="age">
-    <select name="address">
+<form method="post" class="table table-striped">
+    <input type="text" class="form-label"  name="name" placeholder="Mời bạn nhập tên vào"><br>
+    <input type="text" class="form-label"  name="age" placeholder="Mời bạn nhập tuổi"><br>
+    <select name="address" class="form-label"><br>
         <c:forEach items="${addressList}" var="address">
             <option value="${address.id}">${address.name}</option>
         </c:forEach>
     </select>
-    <button type="submit">save</button>
-</form>
+    <button type="submit" class="bi bi-dpad" >save</button>
 
+</form>
 </body>
 </html>
